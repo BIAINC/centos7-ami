@@ -21,7 +21,7 @@ quit
 
 
 END
-mkfs.xfs -L root ${DEVICE}2
+mkfs.xfs -f -L root ${DEVICE}2
 mkdir -p $ROOTFS
 mount ${DEVICE}2 $ROOTFS
 
