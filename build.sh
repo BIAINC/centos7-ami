@@ -3,6 +3,8 @@
 # Build a new CentOS7 install on EBS volume in a chroot
 # Run from RHEL7 or CentOS7 instance
 
+yum update -y
+
 DEVICE=/dev/xvdb
 ROOTFS=/rootfs
 IXGBEVF_VER=3.2.2
@@ -26,7 +28,7 @@ mount ${DEVICE}2 $ROOTFS
 ### Basic CentOS Install
 rpm --root=$ROOTFS --initdb
 rpm --root=$ROOTFS -ivh \
-  http://mirror.bytemark.co.uk/centos/7/os/x86_64/Packages/centos-release-7-2.1511.el7.centos.2.10.x86_64.rpm
+  http://mirrors.kernel.org/centos/7/os/x86_64/Packages/centos-release-7-2.1511.el7.centos.2.10.x86_64.rpm
 # Install necessary packages
 yum --installroot=$ROOTFS --nogpgcheck -y groupinstall core
 yum --installroot=$ROOTFS --nogpgcheck -y install openssh-server grub2 acpid tuned kernel deltarpm epel-release
@@ -119,6 +121,7 @@ cloud_init_modules:
  - ssh
 
 cloud_config_modules:
+ - disk_setup
  - mounts
  - locale
  - set-passwords
@@ -145,7 +148,7 @@ cloud_final_modules:
 
 system_info:
   default_user:
-    name: ec2-user
+    name: centos
     lock_passwd: true
     gecos: Cloud User
     groups: [wheel, adm, systemd-journal]
@@ -158,8 +161,6 @@ system_info:
   ssh_svcname: sshd
 
 mounts:
- - [ ephemeral0, /media/ephemeral0 ]
- - [ ephemeral1, /media/ephemeral1 ]
  - [ swap, none, swap, sw, "0", "0" ]
 
 datasource_list: [ Ec2, None ]
