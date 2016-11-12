@@ -96,6 +96,7 @@ libertas-sd8686-firmware libertas-sd8787-firmware libertas-usb8388-firmware plym
 chroot ${ROOTFS} systemctl enable sshd.service
 chroot ${ROOTFS} systemctl enable cloud-init.service
 chroot ${ROOTFS} systemctl mask tmp.mount
+chroot ${ROOTFS} yum clean all -y
 
 # Configure cloud-init
 cat > ${ROOTFS}/etc/cloud/cloud.cfg << END
