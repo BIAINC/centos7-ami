@@ -31,7 +31,7 @@ rpm --root=$ROOTFS -ivh \
   http://mirrors.kernel.org/centos/7/os/x86_64/Packages/centos-release-7-2.1511.el7.centos.2.10.x86_64.rpm
 # Install necessary packages
 yum --installroot=$ROOTFS --nogpgcheck -y groupinstall core
-yum --installroot=$ROOTFS --nogpgcheck -y install openssh-server grub2 acpid tuned kernel deltarpm epel-release
+yum --installroot=$ROOTFS --nogpgcheck -y install openssh-server grub2 acpid tuned kernel epel-release
 yum --installroot=$ROOTFS -C -y remove NetworkManager --setopt="clean_requirements_on_remove=1"
 
 # Create homedir for root
