@@ -88,6 +88,11 @@ chroot ${ROOTFS} grub2-mkconfig -o /boot/grub2/grub.cfg
 chroot ${ROOTFS} grub2-install $DEVICE
 # Install cloud-init from epel
 chroot ${ROOTFS} yum --nogpgcheck -y install cloud-init cloud-utils-growpart gdisk
+chroot ${ROOTFS} yum -y remove NetworkManager aic94xx-firmware alsa-firmware alsa-lib alsa-tools-firmware \
+biosdevname iprutils ivtv-firmware iwl100-firmware iwl1000-firmware iwl105-firmware iwl135-firmware \
+iwl2000-firmware iwl2030-firmware iwl3160-firmware iwl3945-firmware iwl4965-firmware iwl5000-firmware \
+iwl5150-firmware iwl6000-firmware iwl6000g2a-firmware iwl6000g2b-firmware iwl6050-firmware iwl7260-firmware \
+libertas-sd8686-firmware libertas-sd8787-firmware libertas-usb8388-firmware plymouth
 chroot ${ROOTFS} systemctl enable sshd.service
 chroot ${ROOTFS} systemctl enable cloud-init.service
 chroot ${ROOTFS} systemctl mask tmp.mount
