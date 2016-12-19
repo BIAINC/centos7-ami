@@ -7,7 +7,7 @@ yum update -y
 
 DEVICE=/dev/xvdb
 ROOTFS=/rootfs
-IXGBEVF_VER=3.2.2
+IXGBEVF_VER=3.3.2
 ENA_VER=1.1.2
 ENA_COMMIT=a485656
 TMPDIR=/tmp
