@@ -8,8 +8,8 @@ yum update -y
 DEVICE=/dev/xvdb
 ROOTFS=/rootfs
 IXGBEVF_VER=3.2.2
-ENA_VER=1.0.0
-ENA_COMMIT=b594ac1
+ENA_VER=1.1.2
+ENA_COMMIT=a485656
 TMPDIR=/tmp
 
 cat | parted ${DEVICE} << END
