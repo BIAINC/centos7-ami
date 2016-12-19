@@ -202,6 +202,8 @@ mkdir -p ${TMPDIR}/ena
 git clone https://github.com/amzn/amzn-drivers.git ${TMPDIR}/ena
 cd ${TMPDIR}/ena
 git archive --prefix ena-${ENA_VER}/ ${ENA_COMMIT} | tar xC ${ROOTFS}/usr/src
+curl -sL https://github.com/amzn/amzn-drivers/files/658541/0099081480_1481751768_rhel_7_3.txt |
+  patch -p1 -d ${ROOTFS}/usr/src/ena-${ENA_VER}/
 cat > ${ROOTFS}/usr/src/ena-${ENA_VER}/dkms.conf << END
 PACKAGE_NAME="ena"
 PACKAGE_VERSION="${ENA_VER}"
