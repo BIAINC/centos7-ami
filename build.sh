@@ -177,7 +177,7 @@ END
 # Add additional AWS drivers
 KVER=$(chroot $ROOTFS rpm -q kernel | sed -e 's/^kernel-//')
 # Enable sr-iov
-yum --installroot=$ROOTFS --nogpgcheck -y install dkms make patch
+yum --installroot=$ROOTFS --nogpgcheck -y install dkms make
 curl -L http://sourceforge.net/projects/e1000/files/ixgbevf%20stable/${IXGBEVF_VER}/ixgbevf-${IXGBEVF_VER}.tar.gz/download > /tmp/ixgbevf.tar.gz
 tar zxf /tmp/ixgbevf.tar.gz -C ${ROOTFS}/usr/src
 cat > ${ROOTFS}/usr/src/ixgbevf-${IXGBEVF_VER}/dkms.conf << END
@@ -197,7 +197,7 @@ chroot $ROOTFS dkms install -m ixgbevf -v ${IXGBEVF_VER} -k $KVER
 echo "options ixgbevf InterruptThrottleRate=1,1,1,1,1,1,1,1" > ${ROOTFS}/etc/modprobe.d/ixgbevf.conf
 # Enable Amazon ENA
 # Create an archive file locally from git first
-yum -y install git
+yum -y install git patch
 mkdir -p ${TMPDIR}/ena
 git clone https://github.com/amzn/amzn-drivers.git ${TMPDIR}/ena
 cd ${TMPDIR}/ena
