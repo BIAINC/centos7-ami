@@ -31,7 +31,7 @@ rpm --root=$ROOTFS -ivh \
   http://mirrors.kernel.org/centos/7/os/x86_64/Packages/centos-release-7-3.1611.el7.centos.x86_64.rpm
 # Install necessary packages
 yum --installroot=$ROOTFS --nogpgcheck -y groupinstall core
-yum --installroot=$ROOTFS --nogpgcheck -y install openssh-server grub2 acpid tuned kernel epel-release
+yum --installroot=$ROOTFS --nogpgcheck -y install openssh-server grub2 acpid tuned kernel epel-release openssl
 yum --installroot=$ROOTFS -C -y remove NetworkManager --setopt="clean_requirements_on_remove=1"
 
 # Create homedir for root
@@ -95,6 +95,7 @@ iwl5150-firmware iwl6000-firmware iwl6000g2a-firmware iwl6000g2b-firmware iwl605
 libertas-sd8686-firmware libertas-sd8787-firmware libertas-usb8388-firmware plymouth
 chroot ${ROOTFS} systemctl enable sshd.service
 chroot ${ROOTFS} systemctl enable cloud-init.service
+chroot ${ROOTFS} systemctl disable firewalld
 chroot ${ROOTFS} systemctl mask tmp.mount
 chroot ${ROOTFS} yum clean all -y
 
@@ -221,9 +222,6 @@ chroot $ROOTFS dkms install -m ena -v ${ENA_VER} -k ${KVER}
 
 #Disable SELinux
 sed -i -e 's/^\(SELINUX=\).*/\1disabled/' ${ROOTFS}/etc/selinux/config
-
-# Remove EPEL
-yum --installroot=$ROOTFS -C -y remove epel-release --setopt="clean_requirements_on_remove=1"
 
 # We're done!
 for d in $BINDMNTS ; do
