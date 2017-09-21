@@ -1,24 +1,24 @@
-# CentOS 7 AMI
+# CentOS 7 AMI Builder Script
+This repository includes a build script for a CentOS 7 AMI.
+1. Minimal Packages
+2. SELinux - Configured in permissive mode
+3. Partition Scheme Compatible with CIS Benchmarks for Centos
+  - 1MB Boot Loader (Not Mounted)
+  - 4GB Root        (/)
+  - 2GB Swap        (None)
+  - 4GB Home        (/home)
+  - 1GB log         (/var/log)
+  - 1GB audit       (/var/log/audit)
+  - 4GB var         (/var)
 
-This is the shell script used to build the Bashton CentOS 7 AMIs we have
-made publicly available.  To use, start a RHEL7 or CentOS 7 instance,
-attach a blank EBS volume at /dev/xvdb and the script will do the rest.
+## Usage
+1. Start an existing Centos Images and Attach a 16GB volume to `sdb`
+2. Copy build.sh
+3. Execute `sudo sh build.sh`
+4. Shutdown the instance
+5. Take a snapshot of the 16GB volume
+6. Register the AMI
+`aws --region us-east-1 --profile terraformrole ec2 register-image --name 'CentOS-7.0-test' --description 'Centos7 Master Beta' --virtualization-type hvm --root-device-name /dev/sda1 --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs": { "SnapshotId": "snap-06637969bf4557d79", "VolumeSize":16,  "DeleteOnTermination": true, "VolumeType": "gp2"}}, { "DeviceName":"/dev/xvdb","VirtualName":"ephemeral0"}, { "DeviceName":"/dev/xvdc","VirtualName":"ephemeral1"}]' --architecture x86_64 --sriov-net-support simple --ena-support`
 
-If you just want to run the images, or modify using
-[Packer](http://packer.io/), you can find AMI ids at
-http://www.bashton.com/blog/2015/centos-7-2-1511-ami/
-
-## Differences from official CentOS marketplace AMI
-
-- Uses gpt partitioning - supports root volumes over 2TB
-- Includes [out of tree ixgbevf
-  driver](http://sourceforge.net/projects/e1000/files/ixgbevf%20stable/3.2.2/)
-  providing [enhanced
-networking](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html)
-- Includes [Elastic Network
-  Adapter](https://aws.amazon.com/blogs/aws/elastic-network-adapter-high-performance-network-interface-for-amazon-ec2/)
-support
-  only instance types that support it
-- Local ephemeral storage mounted at `/media/ephemeral0`
-- Default user account `ec2-user`
+# Centos 7 AMI Customizer (Packer)
 
