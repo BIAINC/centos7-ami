@@ -140,8 +140,7 @@ chroot $ROOTFS dkms add -m ixgbevf -v ${IXGBEVF_VER}
 chroot $ROOTFS dkms build -m ixgbevf -v ${IXGBEVF_VER} -k $KVER
 chroot $ROOTFS dkms install -m ixgbevf -v ${IXGBEVF_VER} -k $KVER
 
-echo "options ixgbevf InterruptThrottleRate=1,1,1,1,1,1,1,1" > ${ROOTFS}/etc/modprobe.d/ixgbevf.conf
-
+echo "ixgbevf" > ${ROOTFS}/etc/modules-load.d/ixgbevf.conf
 
 # Configure ENA Drivers
 KVER=$(chroot $ROOTFS rpm -q kernel | sed -e 's/^kernel-//')
@@ -164,6 +163,8 @@ END
 chroot $ROOTFS dkms add -m ena -v ${ENA_VER}
 chroot $ROOTFS dkms dkms build -m ena -v ${ENA_VER} -k ${KVER}
 chroot $ROOTFS dkms install -m ena -v ${ENA_VER} -k ${KVER}
+
+echo "ena" > ${ROOTFS}/etc/modules-load.d/ena.conf
 
 # Install the bootloader
 chroot ${ROOTFS} grub2-mkconfig -o /boot/grub2/grub.cfg
