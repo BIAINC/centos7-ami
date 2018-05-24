@@ -1,0 +1,38 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "region": "us-east-1",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "Centos-7.4-Base-*",
+        "root-device-type": "ebs"
+      },
+      "owners": ["{{user `owner_id`}}"],
+      "most_recent": true
+    },
+    "instance_type": "t2.large",
+    "ssh_username": "centos",
+    "ami_name": "Centos-7.4-ECE-{{timestamp}}",
+    "ami_description": "Centos 7.4 ECE {{timestamp}}",
+    "ami_regions": "{{user `destination_regions`}}",
+    "vpc_id": "{{user `vpc_id`}}",
+    "subnet_id": "{{user `subnet_id`}}",
+    "ssh_private_ip": false,
+    "ena_support": true,
+    "encrypt_boot": true,
+    "sriov_support": true
+  }],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "berks vendor vendor-cookbooks"
+    },
+    {
+      "type": "chef-solo",
+      "cookbook_paths": ["vendor-cookbooks"],
+      "run_list": ["ece::default"],
+      "install_command": "true"
+    }
+  ]
+}

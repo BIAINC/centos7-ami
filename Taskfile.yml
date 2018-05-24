@@ -1,0 +1,22 @@
+# github.com/go-task/task
+
+base:
+  cmds:
+    - packer build -var-file=variables.json centos7-base.json 
+  env:
+    AWS_DEFAULT_PROFILE: terraform
+gm:
+  cmds:
+    - packer build -var-file=variables.json centos7-gold-master.json 
+  env:
+    AWS_DEFAULT_PROFILE: terraform
+docker:
+  cmds:
+    - packer build -var-file=variables.json centos7-docker.json 
+  env:
+    AWS_DEFAULT_PROFILE: terraform
+ece:
+  cmds:
+    - packer build -var-file=variables.json centos7-ece.json 
+  env:
+    AWS_DEFAULT_PROFILE: terraform

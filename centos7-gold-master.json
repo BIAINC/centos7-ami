@@ -1,0 +1,43 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebssurrogate",
+      "ami_virtualization_type": "hvm",
+      "instance_type": "t2.large",
+      "source_ami": "ami-d5bf2caa",
+      "ssh_username": "centos",
+      "ami_name": "Centos-7.5-Master-{{timestamp}}",
+      "ami_description": "Centos 7.5 Master {{timestamp}}",
+      "ena_support": true,
+      "encrypt_boot": true,
+      "sriov_support": true,
+      "region": "us-east-1",
+      "ssh_interface": "public_ip",
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "launch_block_device_mappings": [
+        {
+          "volume_type": "gp2",
+          "device_name": "/dev/xvdf",
+          "delete_on_termination": true,
+          "volume_size": 16,
+          "encrypted": true
+        }
+      ],
+      "ami_root_device": {
+        "source_device_name": "/dev/xvdf",
+        "device_name": "/dev/xvda",
+        "delete_on_termination": true,
+        "volume_size": 16,
+        "volume_type": "gp2"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}",
+      "type": "shell",
+      "script": "assets/scripts/build_base_image.sh"
+    }
+  ]
+}
